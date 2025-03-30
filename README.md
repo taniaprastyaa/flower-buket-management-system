@@ -1,32 +1,32 @@
 ## Run Project
 
 1. Clone this repository:
-   \`\`\`bash
-   git clone https://github.com/taniaprastyaa/flower-buket-management-system.git
-   \`\`\`
+   ```bash
+    git clone https://github.com/taniaprastyaa/flower-buket-management-system.git
+   ```
 
 2. Navigate to the project directory:
-   \`\`\`bash
+   ```bash
    cd project-name
-   \`\`\`
+   ```
 
 3. Install dependencies:
-   \`\`\`bash
+   ```bash
    npm install
-   \`\`\`
+   ```
 
-4. Create a \`.env.local\` file and add the following configuration:
-   \`\`\`
+4. Create a .env file and add the following configuration:
+   ```
    NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
    NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   \`\`\`
+   ```
 
 5. Start the project:
-   \`\`\`bash
+   ```bash
    npm run dev
-   \`\`\`
+   ```
 
 6. Access the project in your browser:
-   \`\`\`
+   ```bash
    http://localhost:3000
-   \`\`\`
+   ```
