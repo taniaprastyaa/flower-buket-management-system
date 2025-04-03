@@ -22,7 +22,7 @@ const orderActions = (row: { order_code: string }) => [
   { label: "Delete", onClick: () => console.log(`Deleting order: ${row.order_code}`) },
 ]
 
-export default function Orders() {
+export default function OrderPage() {
   const [globalFilter, setGlobalFilter] = useState("")
 
   const table = useReactTable({
