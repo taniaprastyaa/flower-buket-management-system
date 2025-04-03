@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowModel } from "@tanstack/react-table"
-import { getOrderColumns } from "./columns"
+import { getOrderColumns } from "@/components/DataTable/columns/orders"
 import { DataTable } from "@/components/DataTable/DataTable"
 import { DataTablePagination } from "@/components/DataTable/DataTablePagination"
 import { TableSearch } from "@/components/DataTable/TableSearch"
