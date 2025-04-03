@@ -28,7 +28,7 @@ const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "/avatars/owner.jpg",
   },
   navMain: [
     {
@@ -38,29 +38,29 @@ const data = {
     },
     {
       title: "Orders",
-      url: "/orders",
+      url: "/dashboard/order",
       icon: IconClipboardList,
     },
     {
       title: "Stock",
-      url: "/stocks",
+      url: "/dashboard/stock",
       icon: IconPackage,
     },
   ],
   documents: [
     {
-      name: "Income Transaction",
-      url: "/income-transactions",
+      name: "Payments",
+      url: "/dashboard/payment",
       icon: IconTrendingUp,
     },
     {
       name: "Expense Transaction",
-      url: "/expense-transactions",
+      url: "/dashboard/expense-transaction",
       icon: IconTrendingDown,
     },
     {
       name: "Monthly Reports",
-      url: "/monthly-reports",
+      url: "/dashboard/monthly-report",
       icon: IconCalendarStats,
     },
   ],
