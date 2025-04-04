@@ -2,14 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableActions } from "@/components/DataTable/DataTableActions"
+import type { Order } from "@/types";
 
-export type Order = {
-  order_code: string
-  customer_name: string
-  contact: string
-  notes: string
-  total_price: number
-}
 
 type OrderColumnsProps = {
   actions?: (row: Order) => { label: string; onClick: () => void }[]
@@ -28,10 +22,6 @@ export function getOrderColumns({ actions }: OrderColumnsProps): ColumnDef<Order
     {
       accessorKey: "contact",
       header: "Contact",
-    },
-    {
-      accessorKey: "notes",
-      header: "Notes",
     },
     {
       accessorKey: "total_price",

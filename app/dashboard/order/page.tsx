@@ -1,39 +1,69 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowModel } from "@tanstack/react-table"
-import { getOrderColumns } from "@/components/DataTable/columns/orders"
-import { DataTable } from "@/components/DataTable/DataTable"
-import { DataTablePagination } from "@/components/DataTable/DataTablePagination"
-import { TableSearch } from "@/components/DataTable/TableSearch"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { IconPlus } from "@tabler/icons-react"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-
-const orders = [
-  { order_code: "ORD-20240403-0001", customer_name: "Budi Santoso", contact: "08123456789", notes: "Cepat ya!", total_price: 150000 },
-  { order_code: "ORD-20240403-0002", customer_name: "Siti Aminah", contact: "08223344556", notes: "Tambah kartu ucapan", total_price: 200000 },
-]
-
-const orderActions = (row: { order_code: string }) => [
-  { label: "Copy Order Code", onClick: () => navigator.clipboard.writeText(row.order_code) },
-  { label: "View Details", onClick: () => console.log("View details", row) },
-  { label: "Delete", onClick: () => console.log(`Deleting order: ${row.order_code}`) },
-]
+import { useState, useEffect } from "react";
+import { useOrderStore } from "@/stores/orderStore";
+import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowModel } from "@tanstack/react-table";
+import { getOrderColumns } from "@/components/DataTable/columns/orders";
+import { DataTable } from "@/components/DataTable/DataTable";
+import { DataTablePagination } from "@/components/DataTable/DataTablePagination";
+import { TableSearch } from "@/components/DataTable/TableSearch";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { IconPlus } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function OrderPage() {
-  const [globalFilter, setGlobalFilter] = useState("")
+  const [globalFilter, setGlobalFilter] = useState("");
+  const { orders, fetchOrders, loading } = useOrderStore();
+
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        await fetchOrders();
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    };
+    getOrders();
+  }, [fetchOrders]);
 
   const table = useReactTable({
     data: orders,
-    columns: getOrderColumns({ actions: orderActions }),
+    columns: getOrderColumns({
+      actions: (row) => [
+        {
+          label: "Copy Order Code",
+          onClick: () => {
+            navigator.clipboard.writeText(row.order_code);
+          },
+        },
+        {
+          label: "View Details",
+          onClick: () => {
+            console.log("View details for order:", row.order_code);
+          },
+        },
+        {
+          label: "Update",
+          onClick: () => {
+            console.log("Update details for order:", row.order_code);
+          },
+        },
+        {
+          label: "Delete",
+          onClick: () => {
+            console.log("Deleting order:", row.order_code);
+          },
+        },
+      ],
+    }),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     state: { globalFilter },
     onGlobalFilterChange: setGlobalFilter,
-  })
+  });  
 
   return (
     <div className="px-4 lg:px-6">
@@ -50,10 +80,16 @@ export default function OrderPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <DataTable table={table} columnsLength={getOrderColumns({}).length} />
-          <DataTablePagination table={table} />
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              <DataTable table={table} columnsLength={getOrderColumns({}).length} />
+              <DataTablePagination table={table} />
+            </>
+          )}
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
