@@ -32,9 +32,11 @@ export default function CreateOrderPage() {
     notes: "",
   });
 
+  const generateUniqueId = () => `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+
   const [orderDetails, setOrderDetails] = useState([
     {
-      id: Date.now(),
+      id: generateUniqueId(),
       buket_name: "",
       size: "m",
       price: "",
@@ -196,7 +198,7 @@ export default function CreateOrderPage() {
                   setOrderDetails([
                     ...orderDetails,
                     {
-                      id: Date.now(),
+                      id: generateUniqueId(),
                       buket_name: "",
                       size: "m",
                       price: "",

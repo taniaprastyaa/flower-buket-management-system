@@ -11,9 +11,9 @@ import {
   IconTrendingUp,
 } from "@tabler/icons-react"
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { NavDocuments } from "@/components/dashboard/sidebar/nav-documents"
+import { NavMain } from "@/components/dashboard/sidebar/nav-main"
+import { NavUser } from "@/components/dashboard/sidebar/nav-user"
 import {
   Sidebar,
   SidebarContent,

@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import { useOrderStore } from "@/stores/orderStore";
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowModel } from "@tanstack/react-table";
-import { getOrderColumns } from "@/components/DataTable/columns/orders";
-import { DataTable } from "@/components/DataTable/DataTable";
-import { DataTablePagination } from "@/components/DataTable/DataTablePagination";
-import { TableSearch } from "@/components/DataTable/TableSearch";
+import { getOrderColumns } from "@/components/dashboard/datatable/columns/orders";
+import { DataTable } from "@/components/dashboard/datatable/datatable";
+import { DataTablePagination } from "@/components/dashboard/datatable/datatable-pagination";
+import { TableSearch } from "@/components/dashboard/datatable/table-search";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";

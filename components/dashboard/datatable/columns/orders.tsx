@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { DataTableActions } from "@/components/DataTable/DataTableActions"
+import { DataTableActions } from "@/components/dashboard/datatable/datatable-actions"
 import type { Order } from "@/types";
 
 
