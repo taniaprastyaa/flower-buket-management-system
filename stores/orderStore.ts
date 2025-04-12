@@ -1,15 +1,12 @@
 import { create } from "zustand";
 import { createClient } from "@/utils/supabase/client";
-import type { Order } from "@/types";
-import type { OrderDetailInput, FullOrderWithDetails } from "@/types";
+import type { Order, OrderDetailInput} from "@/types";
 
-// Buat instance Supabase
 const supabase = createClient();
 
-// State & Actions untuk store
 interface OrderState {
   orders: Order[];
-  selectedOrder: FullOrderWithDetails | null;
+  selectedOrder: Order;
   loading: boolean;
   loadingCrud: boolean;
   fetchOrders: () => Promise<void>;
@@ -27,16 +24,37 @@ interface OrderState {
     notes: string | null,
     orderDetails: OrderDetailInput[]
   ) => Promise<void>;
+  deleteOrder: (orderId: string) => Promise<void>;
 }
 
-// Store Zustand untuk orders
 export const useOrderStore = create<OrderState>((set) => ({
   orders: [],
-  selectedOrder: null,
+  selectedOrder: {
+    id: '',
+    order_code: '',
+    payment_status: '',
+    customer_name: '',
+    contact: '',
+    notes: '',
+    total_price: 0,
+    order_details: [
+      {
+        id: '',
+        order_id: '',
+        buket_name: '',
+        size: '',
+        price: 0,
+        quantity: 1,
+        details: '',
+        deadline: '',
+        status: '',
+      }
+    ]
+  },
   loading: false,
   loadingCrud: false, 
 
-  // Fetch Orders dari Supabase
+  // get all orders
   fetchOrders: async () => {
     set({ loading: true });
   
@@ -54,7 +72,7 @@ export const useOrderStore = create<OrderState>((set) => ({
     set({ orders: data });
   },  
 
-  // Fungsi Create Order
+  // create order
   createOrder: async (customer_name, contact, notes, orderDetails) => {
     set({ loadingCrud: true });
   
@@ -70,12 +88,13 @@ export const useOrderStore = create<OrderState>((set) => ({
     set({ loadingCrud: false });
   
     if (error) {
-      throw new Error(error.message); // lempar error ke atas
+      throw new Error(error.message);
     }
   
     set((state) => ({ orders: [data, ...state.orders] }));
   },
 
+  // get order and order detail by id
   getOrderDetailsById: async (orderId: string) => {
     set({ loading: true });
 
@@ -86,12 +105,13 @@ export const useOrderStore = create<OrderState>((set) => ({
     set({ loading: false });
 
     if (error) {
-      console.error("Error getting order detail:", error.message);
-      throw new Error("Gagal mengambil detail order!");
+      throw new Error("Gagal mengambil detail orders!");
     }
 
     set({ selectedOrder: data });
   },
+  
+  // update order add order detail
   updateOrder: async (orderId, customer_name, contact, notes, orderDetails) => {
     set({ loadingCrud: true });
   
@@ -108,11 +128,28 @@ export const useOrderStore = create<OrderState>((set) => ({
     set({ loadingCrud: false });
   
     if (error) {
-      console.error("Gagal update order:", error.message);
-      throw new Error("Gagal update order");
+      throw new Error(error.message);
     }
   
-    // Refresh selected order dari server setelah update
     await useOrderStore.getState().getOrderDetailsById(orderId);
   },  
+
+  // delete order
+  deleteOrder: async (orderId) => {
+    set({ loadingCrud: true });
+
+    const { error } = await supabase.rpc("delete_order", {
+      p_order_id: orderId,
+    });
+
+    set({ loadingCrud: false });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    set((state) => ({
+      orders: state.orders.filter((order) => order.id !== orderId),
+    }));
+  },
 }));

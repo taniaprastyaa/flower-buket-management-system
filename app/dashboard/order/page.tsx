@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useOrderStore } from "@/stores/orderStore";
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowModel } from "@tanstack/react-table";
-import { getOrderColumns } from "@/components/dashboard/datatable/columns/orders";
+import { getOrderColumns } from "@/components/dashboard/datatable/columns/order";
 import { DataTable } from "@/components/dashboard/datatable/datatable";
 import { DataTablePagination } from "@/components/dashboard/datatable/datatable-pagination";
 import { TableSearch } from "@/components/dashboard/datatable/table-search";
@@ -12,17 +12,27 @@ import { IconPlus } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { DeleteOrderDialog } from "@/components/dashboard/forms/order/delete";
 
 export default function OrderPage() {
   const [globalFilter, setGlobalFilter] = useState("");
-  const { orders, fetchOrders, loading } = useOrderStore();
+  const { orders, fetchOrders, loading} = useOrderStore();
+  const router = useRouter();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState("");
+  const [selectedOrderCode, setSelectedOrderCode] = useState("");
 
   useEffect(() => {
     const getOrders = async () => {
       try {
         await fetchOrders();
-      } catch (error: any) {
-        toast.error(error.message);
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+        } else {
+          toast.error("Terjadi kesalahan saat mengambil data order");
+        }
       }
     };
     getOrders();
@@ -33,27 +43,23 @@ export default function OrderPage() {
     columns: getOrderColumns({
       actions: (row) => [
         {
-          label: "Copy Order Code",
-          onClick: () => {
-            navigator.clipboard.writeText(row.order_code);
-          },
-        },
-        {
           label: "View Details",
           onClick: () => {
-            console.log("View details for order:", row.order_code);
+            router.push(`/dashboard/order/${row.id}`);
           },
         },
         {
           label: "Update",
           onClick: () => {
-            console.log("Update details for order:", row.order_code);
+            router.push(`/dashboard/order/${row.id}/update`);
           },
         },
         {
           label: "Delete",
-          onClick: () => {
-            console.log("Deleting order:", row.order_code);
+          onClick: async () => {
+            setSelectedOrderId(row.id);
+            setSelectedOrderCode(row.order_code);
+            setDeleteDialogOpen(true);
           },
         },
       ],
@@ -90,6 +96,7 @@ export default function OrderPage() {
           )}
         </CardContent>
       </Card>
+      <DeleteOrderDialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} orderId={selectedOrderId} orderCode={selectedOrderCode} />
     </div>
   );
 }

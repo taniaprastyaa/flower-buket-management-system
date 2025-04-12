@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { useOrderStore } from "@/stores/orderStore";
+import { crudOrder } from "@/types";
 
 const createOrderSchema = z.object({
   customer_name: z.string().min(3, { message: "Nama customer minimal 3 karakter" }).nonempty(),
@@ -9,7 +10,7 @@ const createOrderSchema = z.object({
     .array(
       z.object({
         buket_name: z.string().nonempty({ message: "Nama buket wajib diisi" }),
-        size: z.enum(["s", "m", "l", "xl"]),
+        size: z.string().nonempty({ message: "Ukuran wajib diisi" }),
         price: z.number().min(1, { message: "Harga tidak boleh 0" }),
         quantity: z.number().min(1, { message: "Jumlah tidak boleh 0" }),
         details: z.string().nonempty({ message: "Detail wajib diisi" }),
@@ -19,7 +20,7 @@ const createOrderSchema = z.object({
     .min(1, { message: "Minimal 1 order detail harus diinput" }),
 });
 
-export async function createOrderRequest(orderData: any) {
+export async function createOrderRequest(orderData: crudOrder) {
   try {
     const validatedData = createOrderSchema.parse(orderData);
 
@@ -36,6 +37,6 @@ export async function createOrderRequest(orderData: any) {
       const errorMessage = error.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join(", ");
       return { success: false, message: errorMessage };
     }
-    return { success: false, message: "Terjadi kesalahan saat membuat order" };
+    return { success: false, message: "Terjadi kesalahan saat menambahkan order" };
   }
 }

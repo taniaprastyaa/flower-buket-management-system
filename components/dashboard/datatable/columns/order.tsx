@@ -24,6 +24,10 @@ export function getOrderColumns({ actions }: OrderColumnsProps): ColumnDef<Order
       header: "Contact",
     },
     {
+      accessorKey: "payment_status",
+      header: "Payment Status",
+    },
+    {
       accessorKey: "total_price",
       header: "Total Price",
       cell: ({ row }) => (

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { useOrderStore } from "@/stores/orderStore";
+import { crudOrder } from "@/types";
 
 const updateOrderSchema = z.object({
   order_id: z.string().uuid(),
@@ -9,20 +10,19 @@ const updateOrderSchema = z.object({
   order_details: z
     .array(
       z.object({
-        id: z.string().uuid(),
         buket_name: z.string().nonempty({ message: "Nama buket wajib diisi" }),
         size: z.enum(["s", "m", "l", "xl"]),
         price: z.number().min(1, { message: "Harga tidak boleh 0" }),
         quantity: z.number().min(1, { message: "Jumlah tidak boleh 0" }),
         details: z.string().nonempty({ message: "Detail wajib diisi" }),
         deadline: z.string().nonempty({ message: "Deadline wajib diisi" }),
-        status: z.enum(["pending", "in_progress", "completed", "canceled"]),
+        status: z.enum(["Pending", "In Progress", "Completed", "Canceled"]),
       })
     )
     .min(1, { message: "Minimal 1 order detail harus diinput" }),
 });
 
-export async function updateOrderRequest(orderData: any) {
+export async function updateOrderRequest(orderData: crudOrder) {
     try {
       const validated = updateOrderSchema.parse(orderData);
   
@@ -40,6 +40,6 @@ export async function updateOrderRequest(orderData: any) {
         const message = error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ");
         return { success: false, message };
       }
-      return { success: false, message: "Terjadi kesalahan saat update order" };
+      return { success: false, message: "Terjadi kesalahan saat memperbarui order" };
     }
 }

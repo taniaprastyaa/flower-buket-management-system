@@ -42,8 +42,8 @@ const data = {
       icon: IconClipboardList,
     },
     {
-      title: "Stock",
-      url: "/dashboard/stock",
+      title: "Material",
+      url: "/dashboard/material",
       icon: IconPackage,
     },
   ],
