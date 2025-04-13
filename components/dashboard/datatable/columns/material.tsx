@@ -27,7 +27,7 @@ export function getMaterialColumns({ actions }: MaterialColumnsProps): ColumnDef
       accessorKey: "price",
       header: "Price",
       cell: ({ row }) => (
-        <div className="text-right font-medium">
+        <div className="font-medium">
           {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(row.getValue("price"))}
         </div>
       ),

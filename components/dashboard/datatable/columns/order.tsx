@@ -31,7 +31,7 @@ export function getOrderColumns({ actions }: OrderColumnsProps): ColumnDef<Order
       accessorKey: "total_price",
       header: "Total Price",
       cell: ({ row }) => (
-        <div className="text-right font-medium">
+        <div className="font-medium">
           {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(row.getValue("total_price"))}
         </div>
       ),

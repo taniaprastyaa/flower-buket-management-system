@@ -55,7 +55,7 @@ const data = {
     },
     {
       name: "Expense Transaction",
-      url: "/dashboard/expense-transaction",
+      url: "/dashboard/expense",
       icon: IconTrendingDown,
     },
     {
