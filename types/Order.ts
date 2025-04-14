@@ -45,3 +45,16 @@ export interface crudOrder{
     deadline: string;
   }[];
 }
+
+export interface OrderStatusCount {
+  status: string;
+  total: number;
+};
+
+export interface OrderOverview {
+  order_code: string;
+  customer_name: string;
+  buket_name: string;
+  deadline: string; 
+  status: string;
+}

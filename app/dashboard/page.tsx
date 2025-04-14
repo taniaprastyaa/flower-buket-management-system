@@ -1,13 +1,12 @@
 import { ChartAreaInteractive } from "@/components/dashboard/chart-area-interactive"
+import OrderOverviewDatatable from "@/components/dashboard/order-overview-datatable"
 import { SectionCards } from "@/components/dashboard/section-cards"
 
 export default function Dashboard() {
   return(
       <>
         <SectionCards />
-        <div className="px-4 lg:px-6">
-          <ChartAreaInteractive />
-        </div>
+        <OrderOverviewDatatable />
       </>
   )
 }

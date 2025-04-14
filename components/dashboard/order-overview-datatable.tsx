@@ -7,17 +7,17 @@ import { DataTablePagination } from "@/components/dashboard/datatable/datatable-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useStatisticStore } from "@/stores/statisticStore";
-import { getMonthlyReportColumns } from "@/components/dashboard/datatable/columns/monthly-report";
-import { TableSearch } from "@/components/dashboard/datatable/table-search";
+import { getOrderOverviewColumns } from "@/components/dashboard/datatable/columns/order-overview";
+import { TableSearch } from "./datatable/table-search";
 
-export default function MaterialPage() {
+export default function OrderOverviewDatatable() {
   const [globalFilter, setGlobalFilter] = useState("");
-  const { monthlyReports, fetchMonthlyReports, loading} = useStatisticStore();
+  const { orderOverview, fetchOrderOverview, loading} = useStatisticStore();
 
   useEffect(() => {
-    const getMonthlyReports = async () => {
+    const getOrderOverview = async () => {
       try {
-        await fetchMonthlyReports();
+        await fetchOrderOverview();
       } catch (error) {
         if (error instanceof Error) {
           toast.error(error.message);
@@ -26,12 +26,12 @@ export default function MaterialPage() {
         }
       }
     };
-    getMonthlyReports();
-  }, [fetchMonthlyReports]);
+    getOrderOverview();
+  }, [fetchOrderOverview]);
 
   const table = useReactTable({
-    data: monthlyReports,
-    columns: getMonthlyReportColumns(),
+    data: orderOverview,
+    columns: getOrderOverviewColumns(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -43,17 +43,17 @@ export default function MaterialPage() {
     <div className="px-4 lg:px-6">
       <Card>
         <CardHeader>
-          <CardTitle>Monthly Reports</CardTitle>
-          <div className="flex gap-5 items-center mt-2">
-            <TableSearch value={globalFilter} onChange={setGlobalFilter} />
-          </div>
+            <CardTitle>Order Overview</CardTitle>
+            <div className="flex gap-5 items-center mt-2">
+                <TableSearch value={globalFilter} onChange={setGlobalFilter} />
+            </div>
         </CardHeader>
         <CardContent>
           {loading ? (
             <p>Loading...</p>
           ) : (
             <>
-              <DataTable table={table} columnsLength={getMonthlyReportColumns().length} />
+              <DataTable table={table} columnsLength={getOrderOverviewColumns().length} />
               <DataTablePagination table={table} />
             </>
           )}
