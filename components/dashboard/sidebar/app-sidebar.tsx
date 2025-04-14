@@ -13,6 +13,7 @@ import {
 
 import { NavMain } from "@/components/dashboard/sidebar/nav-main"
 import { NavUser } from "@/components/dashboard/sidebar/nav-user"
+
 import {
   Sidebar,
   SidebarContent,
@@ -23,13 +24,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { NavSecondary } from "./nav-secondary"
+import { useSupabaseUser } from "@/hooks/use-supabase-user"
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/owner.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -67,6 +64,12 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const user = useSupabaseUser()
+  const sidebarUser = {
+    name: user?.user_metadata?.full_name || "User",
+    email: user?.email || "no-email@example.com",
+    avatar: user?.user_metadata?.avatar_url || "/avatars/default.jpg",
+  }
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -89,7 +92,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.documents} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={sidebarUser} />
       </SidebarFooter>
     </Sidebar>
   )
