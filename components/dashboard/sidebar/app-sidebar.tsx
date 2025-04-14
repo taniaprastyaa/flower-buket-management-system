@@ -11,7 +11,6 @@ import {
   IconTrendingUp,
 } from "@tabler/icons-react"
 
-import { NavDocuments } from "@/components/dashboard/sidebar/nav-documents"
 import { NavMain } from "@/components/dashboard/sidebar/nav-main"
 import { NavUser } from "@/components/dashboard/sidebar/nav-user"
 import {
@@ -23,6 +22,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { NavSecondary } from "./nav-secondary"
 
 const data = {
   user: {
@@ -49,17 +49,17 @@ const data = {
   ],
   documents: [
     {
-      name: "Payments",
+      title: "Payments", // sebelumnya: name
       url: "/dashboard/payment",
       icon: IconTrendingUp,
     },
     {
-      name: "Expense Transaction",
+      title: "Expense Transaction",
       url: "/dashboard/expense",
       icon: IconTrendingDown,
     },
     {
-      name: "Monthly Reports",
+      title: "Monthly Reports",
       url: "/dashboard/monthly-report",
       icon: IconCalendarStats,
     },
@@ -86,7 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
+        <NavSecondary items={data.documents} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
