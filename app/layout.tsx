@@ -1,4 +1,3 @@
-import { Geist } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider"
 import {Toaster} from "@/components/ui/sonner";
 import "./globals.css";
@@ -9,14 +8,9 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Floista.co",
+  description: "Flower buket management system",
 };
-
-const geistSans = Geist({
-  display: "swap",
-  subsets: ["latin"],
-});
 
 export default function RootLayout({
   children,
