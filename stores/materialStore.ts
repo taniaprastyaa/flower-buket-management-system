@@ -1,8 +1,9 @@
 import { create } from "zustand";
 import { createClient } from "@/utils/supabase/client";
 import type { Material, NewMaterial, UpdateMaterial} from "@/types";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-const supabase = createClient();
+const supabase = createClientComponentClient();
 
 interface materialState {
     materials: Material[];

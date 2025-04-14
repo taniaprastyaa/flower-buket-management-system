@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { createClient } from "@/utils/supabase/client";
 import type { Expense, NewExpense, UpdateExpense} from "@/types";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-const supabase = createClient();
+const supabase = createClientComponentClient()
 
 interface expenseState {
     expenses: Expense[];

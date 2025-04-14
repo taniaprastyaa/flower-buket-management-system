@@ -27,6 +27,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useRouter } from "next/navigation"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { LogoutConfirmationDialog } from "@/components/dashboard/dialogs/logout-confirmation-dialog"
 
 export function NavUser({
   user,
@@ -38,6 +41,12 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const router = useRouter()
+  const supabase = createClientComponentClient()
+  const logout = async () => {
+    await supabase.auth.signOut()
+    router.refresh()
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -88,10 +97,19 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <IconLogout />
-              Log out
-            </DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <LogoutConfirmationDialog
+                  onConfirm={logout}
+                  trigger={
+                    <div className="flex items-center gap-2 w-full px-2 py-1.5 text-sm">
+                      <IconLogout className="size-4" />
+                      <span>Log out</span>
+                    </div>
+                  }
+                />
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
