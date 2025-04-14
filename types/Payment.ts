@@ -6,7 +6,6 @@ export interface Payment {
     amount: number;
     description: string | null;
     payment_method: PaymentMethod;
-    payment_proof: string | null;
     payment_date: string;
     created_at: string;
     updated_at: string;
