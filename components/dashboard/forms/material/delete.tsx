@@ -12,11 +12,7 @@ interface DeleteMaterialDialogProps {
   materialName: string;
 }
 
-export function DeleteMaterialDialog({
-  open,
-  onClose,
-  materialId,
-  materialName,
+export function DeleteMaterialDialog({ open, onClose, materialId, materialName,
 }: DeleteMaterialDialogProps) {
   const { fetchMaterials } = useMaterialStore();
   const [loading, setLoading] = useState(false);
@@ -37,14 +33,7 @@ export function DeleteMaterialDialog({
   };
 
   return (
-    <ActionModal
-      open={open}
-      onClose={onClose}
-      type="delete"
-      title={`Hapus Material ${materialName}?`}
-      onSubmit={handleDelete}
-      loading={loading}
-    >
+    <ActionModal open={open} onClose={onClose} type="delete" title={`Delete Material ${materialName}?`} onSubmit={handleDelete} loading={loading} >
       <DeleteConfirmationMessage label={`material ${materialName}`} />
     </ActionModal>
   );

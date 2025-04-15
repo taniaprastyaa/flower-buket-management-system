@@ -39,19 +39,19 @@ const data = {
       icon: IconClipboardList,
     },
     {
-      title: "Material",
+      title: "Materials",
       url: "/dashboard/material",
       icon: IconPackage,
     },
   ],
   documents: [
     {
-      title: "Payments", // sebelumnya: name
+      title: "Payments",
       url: "/dashboard/payment",
       icon: IconTrendingUp,
     },
     {
-      title: "Expense Transaction",
+      title: "Expense Transactions",
       url: "/dashboard/expense",
       icon: IconTrendingDown,
     },

@@ -3,21 +3,21 @@ import { useOrderStore } from "@/stores/orderStore";
 import { crudOrder } from "@/types";
 
 const createOrderSchema = z.object({
-  customer_name: z.string().min(3, { message: "Nama customer minimal 3 karakter" }).nonempty(),
-  contact: z.string().min(7, { message: "Kontak minimal 7 karakter" }).nonempty(),
+  customer_name: z.string().min(3, { message: "Customer name must be at least 3 characters" }).nonempty(),
+  contact: z.string().min(7, { message: "Contact must be at least 7 characters" }).nonempty(),
   notes: z.string().optional(),
   order_details: z
     .array(
       z.object({
-        buket_name: z.string().nonempty({ message: "Nama buket wajib diisi" }),
-        size: z.string().nonempty({ message: "Ukuran wajib diisi" }),
-        price: z.number().min(1, { message: "Harga tidak boleh 0" }),
-        quantity: z.number().min(1, { message: "Jumlah tidak boleh 0" }),
-        details: z.string().nonempty({ message: "Detail wajib diisi" }),
-        deadline: z.string().nonempty({ message: "Deadline wajib diisi" }),
+        buket_name: z.string().nonempty({ message: "Bouquet name is required" }),
+        size: z.string().nonempty({ message: "Size is required" }),
+        price: z.number().min(1, { message: "Price must be greater than 0" }),
+        quantity: z.number().min(1, { message: "Quantity must be greater than 0" }),
+        details: z.string().nonempty({ message: "Details are required" }),
+        deadline: z.string().nonempty({ message: "Deadline is required" }),
       })
     )
-    .min(1, { message: "Minimal 1 order detail harus diinput" }),
+    .min(1, { message: "At least one order detail must be provided" }),
 });
 
 export async function createOrderRequest(orderData: crudOrder) {
@@ -31,12 +31,12 @@ export async function createOrderRequest(orderData: crudOrder) {
       validatedData.order_details
     );
 
-    return { success: true, message: "Order berhasil dibuat" };
+    return { success: true, message: "Order has been successfully created" };
   } catch (error) {
     if (error instanceof z.ZodError) {
       const errorMessage = error.errors.map((err) => `${err.path.join(".")}: ${err.message}`).join(", ");
       return { success: false, message: errorMessage };
     }
-    return { success: false, message: "Terjadi kesalahan saat menambahkan order" };
+    return { success: false, message: "An error occurred while creating the order" };
   }
 }

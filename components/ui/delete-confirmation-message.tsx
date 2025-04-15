@@ -5,7 +5,7 @@ interface DeleteConfirmationMessageProps {
   export function DeleteConfirmationMessage({ label }: DeleteConfirmationMessageProps) {
     return (
       <p>
-        Apakah kamu yakin ingin menghapus <strong>{label}</strong>? Aksi ini akan menghapus data secara permanen.
+        Are you sure you want to delete <strong>{label}</strong>? This action will permanently remove the data.
       </p>
     );
   }

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { usePaymentStore } from "@/stores/paymentStore";
 import { ActionModal } from "@/components/dashboard/dialogs/action-modal";
 import type { Payment, PaymentMethod } from "@/types";
+import { updatePaymentRequest } from "@/requests/payment/update";
 
 interface UpdatePaymentModalProps {
   open: boolean;
@@ -16,7 +17,7 @@ interface UpdatePaymentModalProps {
 }
 
 export default function UpdatePaymentModal({ open, onClose, payment }: UpdatePaymentModalProps) {
-  const { loadingCrud, updatePayment } = usePaymentStore();
+  const { loadingCrud} = usePaymentStore();
 
   const [form, setForm] = useState({
     id: "",
@@ -45,53 +46,29 @@ export default function UpdatePaymentModal({ open, onClose, payment }: UpdatePay
   };
 
   const handleSubmit = async () => {
-    try {
-      await updatePayment(form);
-      toast.success("Pembayaran berhasil diperbarui");
+    const result = await updatePaymentRequest(form);
+
+    if (result.success) {
+      toast.success(result.message);
       onClose();
-    } catch (error: any) {
-      toast.error(error.message || "Gagal memperbarui pembayaran");
+    } else {
+      toast.error(result.message);
     }
   };
 
   return (
-    <ActionModal
-      open={open}
-      onClose={onClose}
-      type="update"
-      title="Update Pembayaran"
-      onSubmit={handleSubmit}
-      loading={loadingCrud}
-    >
+    <ActionModal open={open} onClose={onClose} type="update" title="Update Payment" onSubmit={handleSubmit} loading={loadingCrud} >
       <div className="grid gap-4">
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="amount">
-            Nominal
-          </Label>
-          <Input
-            id="amount"
-            name="amount"
-            type="number"
-            value={form.amount}
-            onChange={handleChange}
-          />
+          <Label className="block text-sm font-medium mb-2" htmlFor="amount">Amount</Label>
+          <Input id="amount" name="amount" type="number" value={form.amount} onChange={handleChange} />
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="description">
-            Deskripsi
-          </Label>
-          <Input
-            id="description"
-            name="description"
-            type="text"
-            value={form.description}
-            onChange={handleChange}
-          />
+          <Label className="block text-sm font-medium mb-2" htmlFor="description">Description</Label>
+          <Input id="description" name="description" type="text" value={form.description} onChange={handleChange} />
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="payment_method">
-            Metode Pembayaran
-          </Label>
+          <Label className="block text-sm font-medium mb-2" htmlFor="payment_method">Payment Method</Label>
           <Select
             onValueChange={(value: PaymentMethod) =>
               setForm((prev) => ({ ...prev, payment_method: value }))
@@ -99,7 +76,7 @@ export default function UpdatePaymentModal({ open, onClose, payment }: UpdatePay
             value={form.payment_method}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Pilih Metode Pembayaran" />
+              <SelectValue placeholder="Select Payment Payment" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="cash">Cash</SelectItem>

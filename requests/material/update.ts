@@ -3,33 +3,36 @@ import { useMaterialStore } from "@/stores/materialStore";
 import type { UpdateMaterial } from "@/types";
 
 const updateMaterialSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().min(2, { message: "Nama material minimal 2 karakter" }).nonempty(),
-  unit: z.string().min(1, { message: "Satuan wajib diisi" }),
-  price: z.number().min(1, { message: "Harga tidak boleh 0" }),
+  id: z.string().uuid({ message: "Invalid material ID" }),
+  name: z.string().min(2, { message: "Material name must be at least 2 characters long" }).trim(),
+  unit: z.string().min(1, { message: "Unit is required" }).trim(),
+  price: z.number().min(1, { message: "Price must be greater than 0" }),
 });
 
 export async function updateMaterialRequest(materialData: UpdateMaterial) {
-  try {
-    const validatedData = updateMaterialSchema.parse(materialData);
-    await useMaterialStore.getState().updateMaterial(validatedData);
+  const result = updateMaterialSchema.safeParse(materialData);
 
-    return { success: true, message: "Material berhasil diperbarui" };
+  if (!result.success) {
+    const errorMessage = result.error.errors
+      .map((err) => `${err.path.join(".")}: ${err.message}`)
+      .join(", ");
+    return { success: false, message: errorMessage };
+  }
+
+  try {
+    await useMaterialStore.getState().updateMaterial(result.data);
+    return { success: true, message: "Material has been successfully updated" };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const errorMessage = error.errors
-        .map((err) => `${err.path.join(".")}: ${err.message}`)
-        .join(", ");
-      return { success: false, message: errorMessage };
-    }
-    
     if (error instanceof Error && error.message.includes("duplicate key")) {
       return {
         success: false,
-        message: "Nama material sudah digunakan, gunakan nama lain",
+        message: "Material name is already in use, please choose another",
       };
     }
 
-    return { success: false, message: "Terjadi kesalahan saat memperbarui material" };
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "An error occurred while updating the material",
+    };
   }
 }

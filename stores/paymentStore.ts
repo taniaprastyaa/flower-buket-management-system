@@ -34,7 +34,7 @@ export const usePaymentStore = create<paymentState>((set) => ({
         set({ loading: false });
         
         if (error) {
-            throw new Error("Gagal mengambil data payments!");
+            throw new Error("Failed to retrieve payments data!");
         }
         
         set({ payments: data });
@@ -44,20 +44,12 @@ export const usePaymentStore = create<paymentState>((set) => ({
     createPayment: async (newPayment) => {
         set({ loadingCrud: true });
     
-        const {
-        order_id,
-        amount,
-        payment_date,
-        description,
-        payment_method,
-        } = newPayment;
-    
         const { data, error } = await supabase.rpc("create_payment", {
-        p_order_id: order_id,
-        p_amount: amount,
-        p_payment_date: payment_date,
-        p_description: description,
-        p_payment_method: payment_method,
+        p_order_id: newPayment.order_id,
+        p_amount: newPayment.amount,
+        p_payment_date: newPayment.payment_date,
+        p_description: newPayment.description,
+        p_payment_method: newPayment.payment_method,
         });
     
         set({ loadingCrud: false });
@@ -75,7 +67,7 @@ export const usePaymentStore = create<paymentState>((set) => ({
         set({ loadingCrud: false });
     
         if (viewError) {
-            throw new Error("Gagal mengambil data payment!");
+            throw new Error("Failed to retrieve payment data!");
         }
     
         set((state) => ({
@@ -97,7 +89,7 @@ export const usePaymentStore = create<paymentState>((set) => ({
         set({ loading: false });
 
         if (error) {
-        throw new Error("Gagal mengambil detail payment!");
+            throw new Error("Failed to take payment details!");
         }
 
         set({ selectedPayment: data });
@@ -117,7 +109,7 @@ export const usePaymentStore = create<paymentState>((set) => ({
         });
 
         if (error) {
-        set({ loadingCrud: false });
+            set({ loadingCrud: false });
             throw new Error(error.message);
         }
 
@@ -130,7 +122,7 @@ export const usePaymentStore = create<paymentState>((set) => ({
         set({ loadingCrud: false });
 
         if (viewError) {
-            throw new Error("Gagal mengambil data payment!");
+            throw new Error("Failed to retrieve payment data!");
         }
 
         set((state) => ({

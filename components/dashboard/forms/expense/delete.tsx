@@ -9,14 +9,9 @@ interface DeleteExpenseDialogProps {
   open: boolean;
   onClose: () => void;
   expenseId: string;
-  expenseName: string;
 }
 
-export function DeleteExpenseDialog({
-  open,
-  onClose,
-  expenseId,
-  expenseName,
+export function DeleteExpenseDialog({ open, onClose, expenseId,
 }: DeleteExpenseDialogProps) {
   const { fetchExpenses } = useExpenseStore();
   const [loading, setLoading] = useState(false);
@@ -37,15 +32,8 @@ export function DeleteExpenseDialog({
   };
 
   return (
-    <ActionModal
-      open={open}
-      onClose={onClose}
-      type="delete"
-      title={`Hapus Pengeluaran ${expenseName}?`}
-      onSubmit={handleDelete}
-      loading={loading}
-    >
-      <DeleteConfirmationMessage label={`pengeluaran ${expenseName}`} />
+    <ActionModal open={open} onClose={onClose} type="delete" title={`Delete Expense?`} onSubmit={handleDelete} loading={loading}>
+      <DeleteConfirmationMessage label={`expense`} />
     </ActionModal>
   );
 }

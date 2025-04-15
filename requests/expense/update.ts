@@ -3,25 +3,28 @@ import { useExpenseStore } from "@/stores/expenseStore";
 import type { UpdateExpense } from "@/types";
 
 const updateExpenseSchema = z.object({
-  id: z.string().uuid(),
-  quantity: z.number().min(1, { message: "Jumlah tidak boleh kurang dari 1" }),
-  amount: z.number().min(1, { message: "Total biaya tidak boleh kurang dari 1" }),
+  id: z.string().uuid({ message: "Invalid expense ID" }),
+  quantity: z.number().min(1, { message: "Minimum quantity is 1" }),
+  amount: z.number().min(1, { message: "Minimum amount is 1" }),
 });
 
 export async function updateExpenseRequest(expenseData: UpdateExpense) {
+  const result = updateExpenseSchema.safeParse(expenseData);
+
+  if (!result.success) {
+    const errorMessage = result.error.errors
+      .map((err) => `${err.path.join(".")}: ${err.message}`)
+      .join(", ");
+    return { success: false, message: errorMessage };
+  }
+
   try {
-    const validatedData = updateExpenseSchema.parse(expenseData);
-    await useExpenseStore.getState().updateExpense(validatedData);
-
-    return { success: true, message: "Pengeluaran berhasil diperbarui" };
+    await useExpenseStore.getState().updateExpense(result.data);
+    return { success: true, message: "Expense has been successfully updated" };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const errorMessage = error.errors
-        .map((err) => `${err.path.join(".")}: ${err.message}`)
-        .join(", ");
-      return { success: false, message: errorMessage };
-    }
-
-    return { success: false, message: "Terjadi kesalahan saat memperbarui pengeluaran" };
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "An error occurred while updating the expense",
+    };
   }
 }

@@ -3,32 +3,35 @@ import { useMaterialStore } from "@/stores/materialStore";
 import type { NewMaterial } from "@/types";
 
 const createMaterialSchema = z.object({
-  name: z.string().min(2, { message: "Nama material minimal 2 karakter" }).nonempty(),
-  unit: z.string().min(1, { message: "Satuan wajib diisi" }),
-  price: z.number().min(1, { message: "Harga tidak boleh 0" }),
+  name: z.string().min(2, { message: "Material name must be at least 2 characters" }).trim(),
+  unit: z.string().min(1, { message: "Unit is required" }).trim(),
+  price: z.number().min(1, { message: "Price must be greater than 0" }),
 });
 
 export async function createMaterialRequest(materialData: NewMaterial) {
+  const result = createMaterialSchema.safeParse(materialData);
+
+  if (!result.success) {
+    const errorMessage = result.error.errors
+      .map((err) => `${err.path.join(".")}: ${err.message}`)
+      .join(", ");
+    return { success: false, message: errorMessage };
+  }
+
   try {
-    const validatedData = createMaterialSchema.parse(materialData);
-    await useMaterialStore.getState().createMaterial(validatedData);
-
-    return { success: true, message: "Material berhasil ditambahkan" };
+    await useMaterialStore.getState().createMaterial(result.data);
+    return { success: true, message: "Material has been successfully added" };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const errorMessage = error.errors
-        .map((err) => `${err.path.join(".")}: ${err.message}`)
-        .join(", ");
-      return { success: false, message: errorMessage };
-    }
-
     if (error instanceof Error && error.message.includes("duplicate key")) {
       return {
         success: false,
-        message: "Nama material sudah digunakan, gunakan nama lain",
+        message: "Material name is already in use, please choose another",
       };
     }
 
-    return { success: false, message: "Terjadi kesalahan saat menambahkan material" };
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "An error occurred while adding the material",
+    };
   }
 }

@@ -33,7 +33,7 @@ export default function PaymentPage() {
         if (error instanceof Error) {
           toast.error(error.message);
         } else {
-          toast.error("Terjadi kesalahan saat mengambil data payment");
+          toast.error("An error occurred while retrieving payment data");
         }
       }
     };

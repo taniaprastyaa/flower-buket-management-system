@@ -15,10 +15,7 @@ interface UpdateExpenseModalProps {
   expense: Expense | null;
 }
 
-export default function UpdateExpenseModal({
-  open,
-  onClose,
-  expense,
+export default function UpdateExpenseModal({ open, onClose, expense,
 }: UpdateExpenseModalProps) {
   const { loadingCrud } = useExpenseStore();
 
@@ -58,38 +55,15 @@ export default function UpdateExpenseModal({
   };
 
   return (
-    <ActionModal
-      open={open}
-      onClose={onClose}
-      type="update"
-      title="Update Pengeluaran"
-      onSubmit={handleSubmit}
-      loading={loadingCrud}
-    >
+    <ActionModal open={open} onClose={onClose} type="update" title="Update Expense" onSubmit={handleSubmit} loading={loadingCrud} >
       <div className="grid gap-4">
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="quantity">
-            Jumlah
-          </Label>
-          <Input
-            id="quantity"
-            name="quantity"
-            type="number"
-            value={form.quantity}
-            onChange={handleChange}
-          />
+          <Label className="block text-sm font-medium mb-2" htmlFor="quantity">Quantity</Label>
+          <Input id="quantity" name="quantity" type="number" value={form.quantity} onChange={handleChange} />
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="amount">
-            Total Biaya
-          </Label>
-          <Input
-            id="amount"
-            name="amount"
-            type="number"
-            value={form.amount}
-            onChange={handleChange}
-          />
+          <Label className="block text-sm font-medium mb-2" htmlFor="amount">Amount</Label>
+          <Input id="amount" name="amount" type="number" value={form.amount} onChange={handleChange} />
         </div>
       </div>
     </ActionModal>

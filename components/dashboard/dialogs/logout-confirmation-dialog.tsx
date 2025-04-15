@@ -15,7 +15,7 @@ export function LogoutConfirmationDialog({
   trigger,
   onConfirm,
   title = "Logout",
-  description = "Apakah yakin ingin logout?",
+  description = "Are you sure you want to log out?",
 }: LogoutConfirmationDialogProps) {
   const [open, setOpen] = useState(false)
 

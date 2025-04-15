@@ -66,7 +66,7 @@ export const useOrderStore = create<OrderState>((set) => ({
     set({ loading: false });
   
     if (error) {
-      throw new Error("Gagal mengambil data orders!");
+      throw new Error("Failed to retrieve orders data!");
     }
   
     set({ orders: data });
@@ -105,7 +105,7 @@ export const useOrderStore = create<OrderState>((set) => ({
     set({ loading: false });
 
     if (error) {
-      throw new Error("Gagal mengambil detail orders!");
+      throw new Error("Failed to retrieve order details!");
     }
 
     set({ selectedOrder: data });

@@ -34,7 +34,7 @@ export default function MaterialPage() {
         if (error instanceof Error) {
           toast.error(error.message);
         } else {
-          toast.error("Terjadi kesalahan saat mengambil data material");
+          toast.error("An error occurred while retrieving material data");
         }
       }
     };

@@ -24,8 +24,6 @@ export default function ExpensePage() {
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedExpenseId, setSelectedExpenseId] = useState("");
-  const [selectedExpenseName, setSelectedExpenseName] = useState("");
-
 
   useEffect(() => {
     const getExpenses = async () => {
@@ -35,7 +33,7 @@ export default function ExpensePage() {
         if (error instanceof Error) {
           toast.error(error.message);
         } else {
-          toast.error("Terjadi kesalahan saat mengambil data expense");
+          toast.error("An error occurred while retrieving expense data");
         }
       }
     };
@@ -94,7 +92,7 @@ export default function ExpensePage() {
       </Card>
       <CreateExpenseModal open={openCreateModal} onClose={() => setOpenCreateModal(false)} />
       <UpdateExpenseModal open={openUpdateModal} onClose={() => setOpenUpdateModal(false)} expense={selectedExpense} />
-      <DeleteExpenseDialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} expenseId={selectedExpenseId} expenseName={selectedExpenseName} />
+      <DeleteExpenseDialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} expenseId={selectedExpenseId}/>
     </div>
   );
 }

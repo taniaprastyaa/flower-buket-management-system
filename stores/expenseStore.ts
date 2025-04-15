@@ -34,7 +34,7 @@ export const useExpenseStore = create<expenseState>((set) => ({
       set({ loading: false });
         
       if (error) {
-          throw new Error("Gagal mengambil data expenses!");
+          throw new Error("Failed to retrieve expenses datas!");
       }
         
       set({ expenses: data });
@@ -85,7 +85,7 @@ export const useExpenseStore = create<expenseState>((set) => ({
     set({ loading: false });
 
     if (error) {
-      throw new Error("Gagal mengambil detail expense!");
+      throw new Error("Failed to take expense details!");
     }
 
     set({ selectedExpense: data });
@@ -97,7 +97,7 @@ export const useExpenseStore = create<expenseState>((set) => ({
 
     const { id, quantity, amount } = updatedExpense;
 
-    const { data, error } = await supabase.rpc("update_expense", {
+    const { error } = await supabase.rpc("update_expense", {
       p_expense_id: id,
       p_quantity: quantity,
       p_amount: amount,
@@ -117,7 +117,7 @@ export const useExpenseStore = create<expenseState>((set) => ({
     set({ loadingCrud: false });
 
     if (viewError) {
-      throw new Error("Gagal mengambil data expense!");
+      throw new Error("Failed to retrieve expense data!");
     }
 
     set((state) => ({

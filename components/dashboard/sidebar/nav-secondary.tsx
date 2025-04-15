@@ -32,7 +32,7 @@ export function NavSecondary({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname === item.url} // ✅ Mark active
+                isActive={pathname === item.url}
               >
                 <Link href={item.url} className="flex items-center gap-2">
                   <item.icon />

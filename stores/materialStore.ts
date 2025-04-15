@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { createClient } from "@/utils/supabase/client";
 import type { Material, NewMaterial, UpdateMaterial} from "@/types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
@@ -35,7 +34,7 @@ export const useMaterialStore = create<materialState>((set) => ({
       set({ loading: false });
       
       if (error) {
-        throw new Error("Gagal mengambil data materials!");
+        throw new Error("Failed to retrieve materials data!");
       }
       
       set({ materials: data });

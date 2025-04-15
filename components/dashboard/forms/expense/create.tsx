@@ -55,14 +55,7 @@ export default function CreateExpenseModal({ open, onClose }: CreateExpenseModal
   };
 
   return (
-    <ActionModal
-      open={open}
-      onClose={onClose}
-      type="create"
-      title="Tambah Pengeluaran"
-      onSubmit={handleSubmit}
-      loading={loadingCrud}
-    >
+    <ActionModal open={open} onClose={onClose} type="create" title="Create Expense" onSubmit={handleSubmit} loading={loadingCrud}>
       <div className="grid gap-4">
         <div>
           <Label className="block text-sm font-medium mb-2" htmlFor="material_id">Material</Label>
@@ -80,15 +73,15 @@ export default function CreateExpenseModal({ open, onClose }: CreateExpenseModal
           </Select>
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="quantity">Jumlah</Label>
+          <Label className="block text-sm font-medium mb-2" htmlFor="quantity">Quantity</Label>
           <Input id="quantity" name="quantity" type="number" value={form.quantity} onChange={handleChange} />
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="date">Tanggal</Label>
+          <Label className="block text-sm font-medium mb-2" htmlFor="date">Date</Label>
           <Input id="date" name="date" type="date" value={form.date} onChange={handleChange} />
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="amount">Nominal</Label>
+          <Label className="block text-sm font-medium mb-2" htmlFor="amount">Amount</Label>
           <Input id="amount" name="amount" type="number" value={form.amount} onChange={handleChange} />
         </div>
       </div>

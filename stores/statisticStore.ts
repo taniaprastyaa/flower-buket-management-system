@@ -38,7 +38,7 @@ export const useStatisticStore = create<StatisticState>((set) => ({
         set({ loading: false });
 
         if (error) {
-        throw new Error("Gagal mengambil laporan bulanan");
+        throw new Error("Failed to take monthly report");
         }
 
         set({ monthlyReports: data });
@@ -52,7 +52,7 @@ export const useStatisticStore = create<StatisticState>((set) => ({
         set({ loading: false });
       
         if (error) {
-          throw new Error("Gagal mengambil statistik status pesanan");
+          throw new Error("Failed to retrieve order status statistics");
         }
       
         const statusCounts = {
@@ -98,7 +98,7 @@ export const useStatisticStore = create<StatisticState>((set) => ({
         set({ loading: false });
       
         if (error) {
-          throw new Error("Gagal mengambil data ringkasan pesanan");
+          throw new Error("Failed to retrieve order summary data");
         }
       
         set({ orderOverview: data });

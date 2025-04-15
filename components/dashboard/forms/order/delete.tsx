@@ -43,7 +43,7 @@ export function DeleteOrderDialog({
       open={open}
       onClose={onClose}
       type="delete"
-      title={`Hapus Order ${orderCode}?`}
+      title={`Delete Order ${orderCode}?`}
       onSubmit={handleDelete}
       loading={loading}
     >

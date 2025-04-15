@@ -1,15 +1,22 @@
+import { z } from "zod";
 import { usePaymentStore } from "@/stores/paymentStore";
 
+const idSchema = z.string().uuid({ message: "ID pembayaran tidak valid" });
+
 export async function deletePaymentRequest(paymentId: string) {
+  const result = idSchema.safeParse(paymentId);
+
+  if (!result.success) {
+    return { success: false, message: result.error.errors[0].message };
+  }
+
   try {
-    await usePaymentStore.getState().deletePayment(paymentId);
-
-    return { success: true, message: "Pembayaran berhasil dihapus" };
+    await usePaymentStore.getState().deletePayment(result.data);
+    return { success: true, message: "Payment successfully cleared" };
   } catch (error) {
-    if (error instanceof Error) {
-      return { success: false, message: error.message };
-    }
-
-    return { success: false, message: "Terjadi kesalahan saat menghapus pembayaran" };
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "An error occurred while deleting the payment",
+    };
   }
 }

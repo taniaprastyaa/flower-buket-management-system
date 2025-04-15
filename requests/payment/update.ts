@@ -3,45 +3,37 @@ import { usePaymentStore } from "@/stores/paymentStore";
 import type { UpdatePayment } from "@/types";
 
 const updatePaymentSchema = z.object({
-  id: z.string().uuid({ message: "ID pembayaran tidak valid" }),
-  amount: z.number().min(1, { message: "Jumlah pembayaran harus lebih dari 0" }),
+  id: z.string().uuid({ message: "Invalid payment ID" }),
+  amount: z.number().min(1, { message: "Payment amount must be greater than 0" }),
   description: z.string().max(255).nullable(),
   payment_method: z.enum(["cash", "transfer"], {
-    message: "Metode pembayaran tidak valid",
+    message: "Invalid payment method",
   }),
 });
 
 export async function updatePaymentRequest(paymentData: UpdatePayment) {
+  const cleanedData = {
+    ...paymentData,
+    description:
+      paymentData.description?.trim() === "" ? null : paymentData.description?.trim(),
+  };
+
+  const result = updatePaymentSchema.safeParse(cleanedData);
+
+  if (!result.success) {
+    const errorMessage = result.error.errors
+      .map((err) => `${err.path.join(".")}: ${err.message}`)
+      .join(", ");
+    return { success: false, message: errorMessage };
+  }
+
   try {
-    const cleanedData = {
-      ...paymentData,
-      description:
-        paymentData.description?.trim() === "" ? null : paymentData.description,
-    };
-
-    const validatedData = updatePaymentSchema.parse(cleanedData);
-
-    await usePaymentStore.getState().updatePayment(validatedData);
-
-    return { success: true, message: "Pembayaran berhasil diperbarui" };
+    await usePaymentStore.getState().updatePayment(result.data);
+    return { success: true, message: "Payment has been successfully updated" };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      const errorMessage = error.errors
-        .map((err) => `${err.path.join(".")}: ${err.message}`)
-        .join(", ");
-      return { success: false, message: errorMessage };
-    }
-
-    if (error instanceof Error) {
-      return {
-        success: false,
-        message: `Supabase Error: ${error.message}`,
-      };
-    }
-
     return {
       success: false,
-      message: "Terjadi kesalahan saat memperbarui pembayaran",
+      message: error instanceof Error ? error.message : "An error occurred while updating the payment",
     };
   }
 }

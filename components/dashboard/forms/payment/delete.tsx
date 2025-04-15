@@ -11,10 +11,7 @@ interface DeletePaymentDialogProps {
   paymentId: string;
 }
 
-export function DeletePaymentDialog({
-  open,
-  onClose,
-  paymentId,
+export function DeletePaymentDialog({ open, onClose, paymentId,
 }: DeletePaymentDialogProps) {
   const { fetchPayments } = usePaymentStore();
   const [loading, setLoading] = useState(false);
@@ -35,15 +32,8 @@ export function DeletePaymentDialog({
   };
 
   return (
-    <ActionModal
-      open={open}
-      onClose={onClose}
-      type="delete"
-      title={`Hapus Pembayaran?`}
-      onSubmit={handleDelete}
-      loading={loading}
-    >
-      <DeleteConfirmationMessage label={`pembayaran`} />
+    <ActionModal open={open} onClose={onClose} type="delete" title={`Delete Payment?`} onSubmit={handleDelete} loading={loading} >
+      <DeleteConfirmationMessage label={`payment`} />
     </ActionModal>
   );
 }

@@ -15,10 +15,7 @@ interface UpdateMaterialModalProps {
   material: Material | null;
 }
 
-export default function UpdateMaterialModal({
-  open,
-  onClose,
-  material,
+export default function UpdateMaterialModal({ open, onClose, material,
 }: UpdateMaterialModalProps) {
   const { loadingCrud } = useMaterialStore();
 
@@ -62,25 +59,18 @@ export default function UpdateMaterialModal({
   };
 
   return (
-    <ActionModal
-      open={open}
-      onClose={onClose}
-      type="update"
-      title="Update Material"
-      onSubmit={handleSubmit}
-      loading={loadingCrud}
-    >
+    <ActionModal open={open} onClose={onClose} type="update" title="Update Material" onSubmit={handleSubmit} loading={loadingCrud} >
       <div className="grid gap-4">
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="name">Nama</Label>
+          <Label className="block text-sm font-medium mb-2" htmlFor="name">Name</Label>
           <Input id="name" name="name" value={form.name} onChange={handleChange} />
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="unit">Satuan</Label>
+          <Label className="block text-sm font-medium mb-2" htmlFor="unit">Unit</Label>
           <Input id="unit" name="unit" value={form.unit} onChange={handleChange} />
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="price">Harga</Label>
+          <Label className="block text-sm font-medium mb-2" htmlFor="price">Price</Label>
           <Input id="price" name="price" type="number" value={form.price} onChange={handleChange} />
         </div>
       </div>

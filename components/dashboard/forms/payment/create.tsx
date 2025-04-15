@@ -19,7 +19,6 @@ interface CreatePaymentModalProps {
 export default function CreatePaymentModal({ open, onClose }: CreatePaymentModalProps) {
   const { loadingCrud } = usePaymentStore();
   const { orders, fetchOrders } = useOrderStore(); 
-
   const [form, setForm] = useState({
     order_id: "",
     amount: 0,
@@ -27,11 +26,9 @@ export default function CreatePaymentModal({ open, onClose }: CreatePaymentModal
     description: "",
     payment_method: "cash" as PaymentMethod,
   });
-
   useEffect(() => {
     if (open) fetchOrders();
   }, [open, fetchOrders]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -39,23 +36,15 @@ export default function CreatePaymentModal({ open, onClose }: CreatePaymentModal
       [name]: name === "amount" ? Number(value) : value,
     }));
   };
-
   const handleSelectOrder = (value: string) => {
     setForm((prev) => ({ ...prev, order_id: value }));
   };
-
   const handleSubmit = async () => {
     const result = await createPaymentRequest(form);
-
     if (result.success) {
       toast.success(result.message);
       onClose();
-      setForm({
-        order_id: "",
-        amount: 0,
-        payment_date: "",
-        description: "",
-        payment_method: "cash", 
+      setForm({ order_id: "", amount: 0, payment_date: "", description: "", payment_method: "cash", 
       });
     } else {
       toast.error(result.message);
@@ -63,14 +52,7 @@ export default function CreatePaymentModal({ open, onClose }: CreatePaymentModal
   };
 
   return (
-    <ActionModal
-      open={open}
-      onClose={onClose}
-      type="create"
-      title="Tambah Pembayaran"
-      onSubmit={handleSubmit}
-      loading={loadingCrud}
-    >
+    <ActionModal open={open} onClose={onClose} type="create" title="Create Payment" onSubmit={handleSubmit} loading={loadingCrud} >
       <div className="grid gap-4">
         <div>
           <Label className="block text-sm font-medium mb-2" htmlFor="order_id">Order</Label>
@@ -88,37 +70,20 @@ export default function CreatePaymentModal({ open, onClose }: CreatePaymentModal
           </Select>
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="amount">Nominal</Label>
-          <Input
-            id="amount"
-            name="amount"
-            type="number"
-            value={form.amount}
-            onChange={handleChange}
+          <Label className="block text-sm font-medium mb-2" htmlFor="amount">Amount</Label>
+          <Input id="amount" name="amount" type="number" value={form.amount} onChange={handleChange} />
+        </div>
+        <div>
+          <Label className="block text-sm font-medium mb-2" htmlFor="payment_date">Payment Date</Label>
+          <Input id="payment_date" name="payment_date" type="date" value={form.payment_date} onChange={handleChange} />
+        </div>
+        <div>
+          <Label className="block text-sm font-medium mb-2" htmlFor="description">Description</Label>
+          <Input id="description" name="description" type="text" value={form.description} onChange={handleChange}
           />
         </div>
         <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="payment_date">Tanggal Pembayaran</Label>
-          <Input
-            id="payment_date"
-            name="payment_date"
-            type="date"
-            value={form.payment_date}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="description">Deskripsi</Label>
-          <Input
-            id="description"
-            name="description"
-            type="text"
-            value={form.description}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <Label className="block text-sm font-medium mb-2" htmlFor="payment_method">Metode Pembayaran</Label>
+          <Label className="block text-sm font-medium mb-2" htmlFor="payment_method">Payment Method</Label>
           <Select onValueChange={(value: PaymentMethod) => setForm((prev) => ({ ...prev, payment_method: value }))} value={form.payment_method}>
             <SelectTrigger>
               <SelectValue placeholder="Pilih Metode Pembayaran" />
