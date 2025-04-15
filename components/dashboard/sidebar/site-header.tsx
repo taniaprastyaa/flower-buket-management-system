@@ -8,15 +8,29 @@ import { ModeToggle } from "../../ui/mode-toggle"
 const pageTitles: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/dashboard/order": "Orders Page",
+  "/dashboard/order/[id]": "Order Detail Page",
+  "/dashboard/order/[id]/update": "Update Order Page",
   "/dashboard/material": "Material Page",
   "/dashboard/payment": "Payments Page",
   "/dashboard/expense": "Expense Transaction Page",
   "/dashboard/monthly-report": "Monthly Reports Page",
 }
 
+function getDynamicTitle(pathname: string): string {
+  if (/^\/dashboard\/order\/[^\/]+$/.test(pathname)) {
+    return pageTitles["/dashboard/order/[id]"]
+  }
+
+  if (/^\/dashboard\/order\/[^\/]+\/update$/.test(pathname)) {
+    return pageTitles["/dashboard/order/[id]/update"]
+  }
+
+  return pageTitles[pathname] ?? "Dashboard"
+}
+
 export function SiteHeader() {
   const pathname = usePathname()
-  const title = pageTitles[pathname] ?? "Dashboard"
+  const title = getDynamicTitle(pathname)
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
